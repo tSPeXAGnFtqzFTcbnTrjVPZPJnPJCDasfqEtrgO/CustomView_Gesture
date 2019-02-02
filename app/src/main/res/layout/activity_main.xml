@@ -7,7 +7,7 @@
     tools:context=".MainActivity">
 
     <com.example.customview_gesture.view.Custom
-        android:background="#000000"
+        android:background="#07EAFF"
         android:id="@+id/customView"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -15,7 +15,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        app:custom_height="4dp"
-        app:color_select="#1D5BCA"
+        app:custom_height="5dp"
+        app:color_select="#1739B4"
         app:color_unselect="#FFFFFF" />
 </android.support.constraint.ConstraintLayout>

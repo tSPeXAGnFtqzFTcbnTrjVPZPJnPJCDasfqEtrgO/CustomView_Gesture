@@ -1,5 +1,6 @@
 package com.example.customview_gesture.view;
 
+import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -149,49 +150,27 @@ public class Custom extends View implements ICustomView {
     @Override
     public void onDragLeft(float st, float end, float dis) {
 
-        int cur = currentSelect;
+        int prev = currentSelect;
 
         dot.get(currentSelect).setColor(colorUnselect);
         currentSelect -= 1;
         if (currentSelect < 0) currentSelect += dot.size();
         dot.get(currentSelect).setColor(colorSelect);
 
-        Log.d("AAA", "drag left: " + dis);
-
-
-        AnimatorSet animatorSet = new AnimatorSet();
-
-        animatorIn = ValueAnimator.ofFloat(DEFAULT_WIDTH_BEFORE,width);
-        animatorIn.addUpdateListener(animation -> {
-            animateUpdate(currentSelect, (Float) animation.getAnimatedValue());
-        });
-
-        animatorSet.setDuration(DEFAULT_DUARATION_ANIMATION);
-        animatorSet.play(animatorIn);
-        animatorSet.start();
-
+        callAnim(prev);
     }
 
     @Override
     public void onDragRight(float st, float end, float dis) {
+        int prev = currentSelect;
+
         dot.get(currentSelect).setColor(colorUnselect);
         currentSelect += 1;
         currentSelect %= dot.size();
 
         dot.get(currentSelect).setColor(colorSelect);
 
-        Log.d("AAA", "drag right: " + dis);
-
-        AnimatorSet animatorSet = new AnimatorSet();
-
-        animatorIn = ValueAnimator.ofFloat(DEFAULT_WIDTH_BEFORE,width);
-        animatorIn.addUpdateListener(animation -> {
-            animateUpdate(currentSelect, (Float) animation.getAnimatedValue());
-        });
-
-        animatorSet.setDuration(DEFAULT_DUARATION_ANIMATION);
-        animatorSet.play(animatorIn);
-        animatorSet.start();
+        callAnim(prev);
 
     }
 
@@ -244,7 +223,26 @@ public class Custom extends View implements ICustomView {
         return true;
     }
 
+    private void callAnim(int prev){
+        AnimatorSet animatorSet = new AnimatorSet();
+
+        if(animatorIn!=null && animatorIn.isRunning()){
+            animatorIn.cancel();
+            dot.get(prev).setWidth(width);
+        }
+
+        animatorIn = ValueAnimator.ofFloat(DEFAULT_WIDTH_BEFORE,width);
+        animatorIn.addUpdateListener(animation -> {
+            animateUpdate(currentSelect, (Float) animation.getAnimatedValue());
+        });
+
+        animatorSet.setDuration(DEFAULT_DUARATION_ANIMATION);
+
+        animatorSet.play(animatorIn);
+        animatorSet.start();
+    }
     private void animateUpdate(int position,float curVal){
+     //   Log.d("AAA","animateupdate: "+position);
         dot.get(position).setWidth(curVal);
         invalidate();
     }

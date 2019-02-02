@@ -14,6 +14,7 @@ public class CustomGesture extends GestureDetector.SimpleOnGestureListener {
 
     @Override
     public boolean onDown(MotionEvent e) {
+        iCustomView.onDragRight(0,0,0);
         return true;
     }
 
